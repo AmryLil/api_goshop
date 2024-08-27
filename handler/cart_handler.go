@@ -21,13 +21,26 @@ func NewCartHandler(service services.CartService) *cart_handler {
 }
 
 func (h cart_handler) AddtoCartHandler(c *gin.Context) {
-	var dataProduct dto.CartRequest
+	var dataProduct dto.CartItemRequest
 
 	if err := c.ShouldBindJSON(&dataProduct); err != nil {
 		handleError.HandleError(c, &handleError.BadRequestError{Message: err.Error()})
 		return
 	}
-	if err := h.service.AddtoCart(dataProduct); err != nil {
+
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "User ID not found"})
+		return
+	}
+	// Mengonversi userID menjadi tipe yang sesuai
+	id, ok := userID.(*int)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user ID type"})
+		return
+	}
+
+	if err := h.service.AddtoCart(dataProduct, id); err != nil {
 		handleError.HandleError(c, err)
 		return
 	}
@@ -64,7 +77,18 @@ func (h *cart_handler) DeleteCartHandler(c *gin.Context) {
 
 	param_id, _ := strconv.Atoi(id)
 
-	if err := h.service.Delete(param_id, dataProduct); err != nil {
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "User ID not found"})
+		return
+	}
+	userid, ok := userID.(*int)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user ID type"})
+		return
+	}
+
+	if err := h.service.Delete(param_id, userid, dataProduct); err != nil {
 		handleError.HandleError(c, err)
 		return
 	}
@@ -76,7 +100,17 @@ func (h *cart_handler) DeleteCartHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 func (h *cart_handler) ReadCartHandler(c *gin.Context) {
-	cart_data, err := h.service.ReadCart()
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "User ID not found"})
+		return
+	}
+	id, ok := userID.(*int)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user ID type"})
+		return
+	}
+	cart_data, err := h.service.ReadCart(id)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error_message": err})
 		return

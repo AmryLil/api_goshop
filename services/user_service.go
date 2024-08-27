@@ -65,7 +65,7 @@ func (s *service) Login(req *dto.LoginRequest) (string, *dto.LoginResponse, erro
 	}
 
 	if err := helper.VerifyPassword(models.Password, req.Password); err != nil {
-		return "", nil, &handleError.NotFoundError{Message: "your password is wrong"}
+		return "", nil, &handleError.BadRequestError{Message: "your password is wrong"}
 
 	}
 

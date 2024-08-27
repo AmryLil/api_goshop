@@ -18,5 +18,5 @@ func CartRouters(c *gin.RouterGroup) {
 	c.POST("/addtocart", cartHandler.AddtoCartHandler)
 	c.GET("/cart", cartHandler.ReadCartHandler)
 	c.POST("/updatecart", cartHandler.UpdateCartHandler)
-	c.POST("/deletecart/:id", cartHandler.DeleteCartHandler)
+	c.GET("/deletecart/:id", cartHandler.DeleteCartHandler)
 }

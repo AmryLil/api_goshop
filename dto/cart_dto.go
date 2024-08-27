@@ -1,22 +1,31 @@
 package dto
 
+import "time"
+
+// request
+
 type CartRequest struct {
-	Id             int    `json:"id" binding:"required"`
-	UserId         int    `json:"user_id" binding:"required"`
-	ProductName    string `json:"product_name" binding:"required"`
-	Entity         int    `json:"entity" binding:"required"`
-	Type           string `json:"type" binding:"required"`
-	Variant        string `json:"variant" binding:"required"`
-	StoreName      string `json:"store_name" binding:"required"`
-	ProductPicture []byte `json:"product_picture" binding:"required"`
+	ID     int `json:"id" `
+	UserID int `json:"user_id" `
 }
 
+type CartItemRequest struct {
+	ID        int `json:"id"`
+	ProductID int `json:"product_id"`
+	Quantity  int `json:"quantity"`
+}
+
+// response
 type CartResponse struct {
-	UserId         int    `json:"user_id"`
-	ProductName    string `json:"product_name"`
-	Entity         int    `json:"entity"`
-	Type           string `json:"type"`
-	Variant        string `json:"variant"`
-	StoreName      string `json:"store_name"`
-	ProductPicture []byte `json:"product_picture"`
+	ID        int                `json:"id"`
+	UserID    int                `json:"user_id"`
+	CartItems []CartItemResponse `json:"cart_items"`
+	CreatedAt time.Time          `json:"created_at"`
+	UpdatedAt time.Time          `json:"updated_at"`
+}
+
+type CartItemResponse struct {
+	ID       int             `json:"id"`
+	Product  ProductResponse `json:"product"`
+	Quantity int             `json:"quantity"`
 }

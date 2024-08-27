@@ -3,6 +3,7 @@ package middlewares
 import (
 	"api_goshop/handleError"
 	"api_goshop/helper"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -33,6 +34,7 @@ func JWTMiddleware() gin.HandlerFunc {
 			return
 		}
 		c.Set("userID", userID)
+		fmt.Printf("Validate")
 		c.Next()
 	}
 }

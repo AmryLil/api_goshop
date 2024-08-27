@@ -5,6 +5,7 @@ import (
 	"api_goshop/handleError"
 	"api_goshop/helper"
 	"api_goshop/services"
+	"log"
 	"net/http"
 	"time"
 
@@ -56,8 +57,6 @@ func (h *useraccounthandler) GetDataUser(c *gin.Context) {
 		"firtname":  data.Firstname,
 		"lastname":  data.Lastname,
 		"email":     data.Email,
-		"is_seller": data.IsSeller,
-		"seller":    data.Seller,
 		"username":  data.Username,
 		"create_at": data.CreatedAt,
 	})
@@ -77,20 +76,27 @@ func (h *useraccounthandler) LoginHandler(c *gin.Context) {
 		return
 	}
 
+	// shddjhdahhjajdjv
+
 	expiration := time.Now().Add(24 * time.Hour)
 	cookie := http.Cookie{
 		Name:     "token",
 		Value:    token,
+		Path:     "/",         // Pastikan path sudah benar
+		Domain:   "localhost", // Pastikan domain sesuai
 		Expires:  expiration,
-		HttpOnly: true,
-		Secure:   false,
+		HttpOnly: false,
+		Secure:   false, // Ubah ke true jika menggunakan HTTPS
 		SameSite: http.SameSiteLaxMode,
 	}
 	http.SetCookie(c.Writer, &cookie)
 
+	// Tambahkan logging
+	log.Printf("Set Cookie: %v\n", cookie)
+
 	response := dto.ResponseParams{
 		StatusCode: http.StatusOK,
-		Message:    "Succesfully Login",
+		Message:    "Successfully Login",
 		Data:       res,
 	}
 	c.JSON(http.StatusOK, response)

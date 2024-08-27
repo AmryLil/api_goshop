@@ -1,28 +1,25 @@
 package models
 
+import "time"
+
 type Purchase struct {
-	Id             int    `gorm:"primaryKey;autoIncrement"`
-	SellerId       int    `gorm:"unique;not null"`
-	UserId         int    `gorm:"unique;not null"`
-	ProductId      int    `gorm:"unique;not null"`
-	ProductName    string `gorm:"type:varchar(255);not null"`
-	Entity         int    `gorm:"not null"`
-	Type           string `gorm:"type:varchar(255);not null"`
-	Status         bool   `gorm:"type:boolean;not null;default:false"`
-	Variant        string `gorm:"type:varchar(255);not null"`
-	StoreName      string `gorm:"type:varchar(255);not null"`
-	ProductPicture []byte
+	ID              uint             `gorm:"primaryKey;autoIncrement"`
+	UserID          uint             `gorm:"not null"`
+	OrderDate       time.Time        `gorm:"autoCreateTime"`
+	Status          string           `gorm:"type:varchar(50);not null"` // Status pesanan seperti Pending, Shipped, Delivered
+	TotalAmount     float64          `gorm:"type:decimal(10,2);not null"`
+	PaymentMethod   string           `gorm:"type:varchar(255);not null"` // Metode pembayaran seperti Credit Card, PayPal, dll.
+	PaymentStatus   string           `gorm:"type:varchar(50);not null"`  // Status pembayaran seperti Paid, Unpaid
+	PurchaseDetails []PurchaseDetail `gorm:"foreignKey:OrderID"`
 }
 
-type PurchaseHistory struct {
-	Id             int    `gorm:"primaryKey;autoIncrement"`
-	SellerId       int    `gorm:"unique;not null"`
-	UserId         int    `gorm:"unique;not null"`
-	ProductId      int    `gorm:"unique;not null"`
-	ProductName    string `gorm:"type:varchar(255);not null"`
-	Entity         int    `gorm:"not null"`
-	Type           string `gorm:"type:varchar(255);not null"`
-	Variant        string `gorm:"type:varchar(255);not null"`
-	StoreName      string `gorm:"type:varchar(255);not null"`
-	ProductPicture []byte
+type PurchaseDetail struct {
+	ID           uint    `gorm:"primaryKey;autoIncrement"`
+	OrderID      uint    `gorm:"not null"`
+	ProductID    uint    `gorm:"not null"`
+	Quantity     int     `gorm:"not null"`
+	PriceAtOrder float64 `gorm:"type:decimal(10,2);not null"`
+
+	Purchase Purchase `gorm:"foreignKey:OrderID"`   // Relasi ke Order
+	Product  Product  `gorm:"foreignKey:ProductID"` // Relasi ke Product
 }

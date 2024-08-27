@@ -23,7 +23,10 @@ func DBConnetcion() {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&models.UserAccounts{})
 	db.AutoMigrate(&models.Cart{})
+	db.AutoMigrate(&models.CartItem{})
+	db.AutoMigrate(&models.UserAccounts{})
+	db.AutoMigrate(&models.Product{})
+	db.AutoMigrate(&models.ProductPicture{})
 	DB = db
 }
