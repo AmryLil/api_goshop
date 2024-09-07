@@ -27,6 +27,7 @@ func DBConnetcion() {
 	db.AutoMigrate(&models.CartItem{})
 	db.AutoMigrate(&models.UserAccounts{})
 	db.AutoMigrate(&models.Product{})
-	db.AutoMigrate(&models.ProductPicture{})
+	db.AutoMigrate(&models.Payment{})
+	db.AutoMigrate(&models.ItemDetails{})
 	DB = db
 }

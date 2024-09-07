@@ -4,7 +4,6 @@ import (
 	"api_goshop/dto"
 	"api_goshop/handleError"
 	"api_goshop/helper"
-	"api_goshop/models"
 	"api_goshop/services"
 	"net/http"
 	"strconv"
@@ -73,7 +72,6 @@ func (h *cart_handler) UpdateCartHandler(c *gin.Context) {
 
 func (h *cart_handler) DeleteCartHandler(c *gin.Context) {
 	id := c.Param("id")
-	var dataProduct models.Cart
 
 	param_id, _ := strconv.Atoi(id)
 
@@ -88,7 +86,7 @@ func (h *cart_handler) DeleteCartHandler(c *gin.Context) {
 		return
 	}
 
-	if err := h.service.Delete(param_id, userid, dataProduct); err != nil {
+	if err := h.service.Delete(param_id, userid); err != nil {
 		handleError.HandleError(c, err)
 		return
 	}

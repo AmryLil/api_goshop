@@ -8,8 +8,7 @@ type Purchase struct {
 	OrderDate       time.Time        `gorm:"autoCreateTime"`
 	Status          string           `gorm:"type:varchar(50);not null"` // Status pesanan seperti Pending, Shipped, Delivered
 	TotalAmount     float64          `gorm:"type:decimal(10,2);not null"`
-	PaymentMethod   string           `gorm:"type:varchar(255);not null"` // Metode pembayaran seperti Credit Card, PayPal, dll.
-	PaymentStatus   string           `gorm:"type:varchar(50);not null"`  // Status pembayaran seperti Paid, Unpaid
+	PaymentStatus   string           `gorm:"type:varchar(50);not null"` // Status pembayaran seperti Paid, Unpaid
 	PurchaseDetails []PurchaseDetail `gorm:"foreignKey:OrderID"`
 }
 

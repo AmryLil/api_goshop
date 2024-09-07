@@ -12,9 +12,9 @@ import (
 
 type CartService interface {
 	AddtoCart(req dto.CartItemRequest, id *int) error
-	Delete(id int, userID *int, dataProduct models.Cart) error
+	Delete(id int, userID *int) error
 	Update(req dto.CartRequest) error
-	ReadCart(userID *int) ([]models.Cart, error)
+	ReadCart(userID *int) (models.Cart, error)
 }
 
 type cart_service struct {
@@ -71,15 +71,16 @@ func (s *cart_service) Update(req dto.CartRequest) error {
 	return nil
 }
 
-func (s *cart_service) Delete(id int, userID *int, dataProdust models.Cart) error {
-	err := s.repository.Delete(id, userID, dataProdust)
+func (s *cart_service) Delete(id int, userID *int) error {
+	var cartItem models.Cart
+	err := s.repository.Delete(id, userID, cartItem)
 	if err != nil {
 		return &handleError.InternalServerError{Message: err.Error()}
 	}
 	return nil
 }
 
-func (s *cart_service) ReadCart(userID *int) ([]models.Cart, error) {
+func (s *cart_service) ReadCart(userID *int) (models.Cart, error) {
 	data, err := s.repository.ReadCart(userID)
 	return data, err
 }

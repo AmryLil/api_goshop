@@ -8,9 +8,9 @@ import (
 
 type CartRepository interface {
 	AddtoCart(dataProduct models.Cart) error
-	Delete(id int, userID *int, dataProduct models.Cart) error
+	Delete(id int, userID *int, cart models.Cart) error
 	Update(dataProduct models.Cart) error
-	ReadCart(userID *int) ([]models.Cart, error)
+	ReadCart(userID *int) (models.Cart, error)
 	FindUserOrCreate(userID *int) (models.Cart, error)
 	CartExist(productID int, userID int) (*models.CartItem, error)
 	CreateCartItems(cartItem models.CartItem) error
@@ -30,9 +30,18 @@ func (r cart_repository) AddtoCart(dataProduct models.Cart) error {
 	return err
 }
 
-func (r cart_repository) Delete(id int, userID *int, dataProduct models.Cart) error {
-	err := r.db.Where("id = ? AND user_id = ?", id, userID).Delete(&dataProduct).Error
-	return err
+func (r cart_repository) Delete(id int, userID *int, cart models.Cart) error {
+	if err := r.db.Where("user_id = ?", userID).First(&cart).Error; err != nil {
+		// Tangani kesalahan jika cart tidak ditemukan
+		return err
+	}
+	var cartItem models.CartItem
+	// Langkah 2: Hapus CartItems berdasarkan ProductID dan CartID
+	if err := r.db.Where("product_id = ?", id).Delete(&cartItem).Error; err != nil {
+		// Tangani kesalahan jika penghapusan gagal
+		return err
+	}
+	return nil
 }
 
 func (r cart_repository) Update(dataProduct models.Cart) error {
@@ -40,9 +49,11 @@ func (r cart_repository) Update(dataProduct models.Cart) error {
 	return err
 }
 
-func (r cart_repository) ReadCart(userID *int) ([]models.Cart, error) {
-	var dataProduct []models.Cart
-	err := r.db.Preload("CartItems.Product").First(&dataProduct, userID).Error
+func (r cart_repository) ReadCart(userID *int) (models.Cart, error) {
+	var dataProduct models.Cart
+	err := r.db.Preload("CartItems.Product").
+		Where("user_id = ?", userID). // Menentukan kondisi pencarian
+		Find(&dataProduct).Error
 	return dataProduct, err
 }
 func (r cart_repository) FindUserOrCreate(userID *int) (models.Cart, error) {

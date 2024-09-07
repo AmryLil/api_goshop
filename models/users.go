@@ -10,7 +10,8 @@ type UserAccounts struct {
 	Lastname    string     `gorm:"type:varchar(255);not null"`
 	Username    string     `gorm:"type:varchar(255);not null;unique"`
 	Password    string     `gorm:"type:varchar(255);not null"`
-	Purchases   []Purchase `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
-	Carts       []Cart     `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	Purchases   []Purchase `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Payments    []Payment  `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Carts       []Cart     `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	CreatedAt   time.Time  `gorm:"autoCreateTime"`
 }

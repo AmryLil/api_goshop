@@ -16,6 +16,8 @@ func main() {
 	api := router.Group("/api")
 	routes.UserRoutes(api)
 	routes.CartRouters(api)
+	routes.ProductRouters(api)
+	routes.PaymentRouters(api)
 	router.Run()
 
 }

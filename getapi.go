@@ -19,20 +19,20 @@ type Product struct {
 	Price           float64                 `gorm:"not null"`
 	Entity          int                     `gorm:"not null"`
 	PurchaseDetails []models.PurchaseDetail `gorm:"foreignKey:OrderID"`
-	ProductPictures []models.ProductPicture `gorm:"foreignKey:ProductID"`
+	ProductPictures string                  `gorm:"type:varchar(255);not null"`
 	CreatedAt       time.Time               `gorm:"autoCreateTime"`
 }
 
 // Struct untuk response dari API
 type APIResponse struct {
 	Products []struct {
-		ID          int      `json:"id"`
-		Title       string   `json:"title"`
-		Description string   `json:"description"`
-		Price       float64  `json:"price"`
-		Category    string   `json:"category"`
-		Stock       int      `json:"stock"`
-		Images      []string `json:"images"` // URL gambar
+		ID          int     `json:"id"`
+		Title       string  `json:"title"`
+		Description string  `json:"description"`
+		Price       float64 `json:"price"`
+		Category    string  `json:"category"`
+		Stock       int     `json:"stock"`
+		Thumbnail   string  `json:"thumbnail"` // URL gambar
 	} `json:"products"`
 }
 
@@ -46,7 +46,7 @@ func main2() {
 	}
 
 	// Auto-migrate untuk membuat tabel products dan pictures
-	if err := db.AutoMigrate(&Product{}, &models.ProductPicture{}); err != nil {
+	if err := db.AutoMigrate(&Product{}); err != nil {
 		fmt.Println("Failed to auto-migrate:", err)
 		return
 	}
@@ -68,13 +68,13 @@ func main2() {
 	// Masukkan data dari API ke database dengan nilai Entity dari Stock
 	for _, product := range apiResponse.Products {
 		dbProduct := Product{
-			ID:          product.ID,
-			Title:       product.Title,
-			Description: product.Description,
-			Price:       product.Price * exchangeRate, // Konversi harga ke Rupiah
-			Category:    product.Category,
-			Entity:      product.Stock, // Set nilai entity dari stock
-		}
+			ID:              product.ID,
+			Title:           product.Title,
+			Description:     product.Description,
+			Price:           product.Price * exchangeRate, // Konversi harga ke Rupiah
+			Category:        product.Category,
+			Entity:          product.Stock,
+			ProductPictures: product.Thumbnail}
 
 		// Simpan produk terlebih dahulu
 		if err := db.Create(&dbProduct).Error; err != nil {
@@ -82,17 +82,6 @@ func main2() {
 			continue
 		}
 
-		// Simpan gambar dengan ProductID
-		for _, imageURL := range product.Images {
-			picture := models.ProductPicture{
-				ProductID:   dbProduct.ID,     // Hubungkan gambar dengan produk
-				PictureData: []byte(imageURL), // Menyimpan URL sebagai BLOB (Jika diperlukan)
-			}
-
-			if err := db.Create(&picture).Error; err != nil {
-				fmt.Printf("Failed to create picture for product ID %d: %v\n", dbProduct.ID, err)
-			}
-		}
 	}
 
 	fmt.Println("Data from API inserted successfully!")
