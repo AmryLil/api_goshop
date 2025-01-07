@@ -78,13 +78,14 @@ func (service *payment_service) CreatePayment(itemDetailsPayment []dto.ItemDetai
 		UserID: *userID,
 		Status: "pending",
 	}
-	err = service.repository.CreatePayment(payment)
+	currentPayment, err := service.repository.CreatePayment(payment)
 	if err != nil {
 		return nil, &handleError.InternalServerError{Message: err.Error()}
 	}
 	var paymentDetails []models.ItemDetails
 	for _, itemDetails := range itemDetailsPayment {
 		itemDetail := models.ItemDetails{
+			PaymentID: currentPayment.ID,
 			ProudctID: itemDetails.ProductID,
 			QTY:       itemDetails.QTY,
 			Name:      itemDetails.Name,

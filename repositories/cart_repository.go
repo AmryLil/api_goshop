@@ -52,15 +52,17 @@ func (r cart_repository) Update(dataProduct models.Cart) error {
 func (r cart_repository) ReadCart(userID *int) (models.Cart, error) {
 	var dataProduct models.Cart
 	err := r.db.Preload("CartItems.Product").
-		Where("user_id = ?", userID). // Menentukan kondisi pencarian
+		Where("user_id = ?", userID).
 		Find(&dataProduct).Error
 	return dataProduct, err
 }
+
 func (r cart_repository) FindUserOrCreate(userID *int) (models.Cart, error) {
 	var cart models.Cart
 	err := r.db.Where("user_id = ?", *userID).FirstOrCreate(&cart, models.Cart{UserID: *userID}).Error
 	return cart, err
 }
+
 func (r cart_repository) CartExist(productID int, userID int) (*models.CartItem, error) {
 	var cartItem models.CartItem
 	err := r.db.Joins("JOIN carts ON carts.id = cart_items.cart_id").
@@ -71,9 +73,11 @@ func (r cart_repository) CartExist(productID int, userID int) (*models.CartItem,
 	}
 	return &cartItem, nil
 }
+
 func (r cart_repository) CreateCartItems(cartItem models.CartItem) error {
 	return r.db.Create(&cartItem).Error
 }
+
 func (r cart_repository) AddQty(cartItemID int, quantity int) error {
 	return r.db.Model(&models.CartItem{}).Where("id = ?", cartItemID).
 		Update("quantity", gorm.Expr("quantity + ?", quantity)).Error

@@ -77,7 +77,7 @@ func (s *service) Login(req *dto.LoginRequest) (string, *dto.LoginResponse, erro
 	userResponse := &dto.LoginResponse{
 		Name: models.Username, ID: models.Id,
 
-		Token: "ada di cookies",
+		Token: "ada di cookies cokkk akkkk",
 	}
 	return token, userResponse, err
 

@@ -1,0 +1,232 @@
+[33mcommit 3f654f068c6027587286c1583681c7f849d462fe[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Sun Sep 8 03:33:55 2024 +0800
+
+    Add .gitignore to exclude sensitive files
+
+ .gitignore | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+[33mcommit ea6dbf0beb3c27f32cc9f841e66ef20a8a71baed[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Sun Sep 8 03:29:39 2024 +0800
+
+    Remove sensitive file from repo
+
+ goshop-be94c-firebase-adminsdk-xyt39-4a1194ba92.json | 13 [31m-------------[m
+ 1 file changed, 13 deletions(-)
+
+[33mcommit 311ae84cb1048976455771932068870175ee1b00[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Sun Sep 8 03:26:58 2024 +0800
+
+    add payment gateway service
+
+ .vscode/settings.json                              |  18 [32m++[m
+ config/db.go                                       |   3 [32m+[m[31m-[m
+ config/firebase.go                                 |  23 [32m+++[m
+ dto/payment_dto.go                                 |  34 [32m++++[m
+ dto/products_dto.go                                |  24 [32m++[m[31m-[m
+ dto/user_dto.go                                    |  15 [32m++[m
+ getapi.go                                          |  43 [32m++[m[31m--[m
+ go.mod                                             |  40 [32m+++[m[31m-[m
+ go.sum                                             | 158 [32m+++++++++++++++[m
+ ...p-be94c-firebase-adminsdk-xyt39-4a1194ba92.json |  13 [32m++[m
+ goshop.session.sql                                 |   2 [32m+[m
+ handler/cart_handler.go                            |   4 [32m+[m[31m-[m
+ handler/payment_handler.go                         |  50 [32m+++++[m
+ handler/product_handler.go                         | 222 [32m+++++++++++++++++++++[m
+ main.go                                            |   2 [32m+[m
+ models/payment.go                                  |  21 [32m++[m
+ models/pictures.go                                 |   7 [31m-[m
+ models/products.go                                 |   7 [32m+[m[31m-[m
+ models/purchase.go                                 |   3 [32m+[m[31m-[m
+ models/users.go                                    |   5 [32m+[m[31m-[m
+ repositories/cart_repository.go                    |  27 [32m++[m[31m-[m
+ repositories/payment_repo.go                       |  37 [32m++++[m
+ repositories/product_repo.go                       |  46 [32m+++++[m
+ routes/cart_routers.go                             |   2 [32m+[m[31m-[m
+ routes/payment_router.go                           |  20 [32m++[m
+ routes/product_routers.go                          |  23 [32m+++[m
+ services/cart_service.go                           |  11 [32m+[m[31m-[m
+ services/payment_service.go                        | 104 [32m++++++++++[m
+ services/product_service.go                        | 135 [32m+++++++++++++[m
+ 29 files changed, 1036 insertions(+), 63 deletions(-)
+
+[33mcommit 1d4c683fb603d031c60bd80ee33a220193a88f67[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Tue Aug 27 15:05:19 2024 +0800
+
+    coba
+
+ config/db.go                    |  5 [32m++[m[31m-[m
+ dto/cart_dto.go                 | 39 [32m+++++++++[m[31m-------[m
+ dto/products_dto.go             |  8 [32m++++[m
+ getapi.go                       | 99 [32m+++++++++++++++++++++++++++++++++++++++++[m
+ go.mod                          | 12 [32m++[m[31m---[m
+ go.sum                          | 74 [32m++++++++++++++++++++++++++++++[m
+ handler/cart_handler.go         | 42 [32m+++++++++++++++[m[31m--[m
+ handler/user_handler.go         | 16 [32m++++[m[31m---[m
+ middleware/authJWTMiddleware.go |  2 [32m+[m
+ models/carts.go                 | 31 [32m+++++++++++++[m
+ models/pictures.go              |  7 [32m+++[m
+ models/products.go              | 20 [32m++++[m[31m-----[m
+ models/purchase.go              | 41 [32m++++++++[m[31m---------[m
+ models/users.go                 | 47 [32m+++++[m[31m--------------[m
+ repositories/cart_repository.go | 38 [32m+++++++++++++[m[31m---[m
+ repositories/product_repo.go    | 19 [32m++++++++[m
+ routes/cart_routers.go          |  2 [32m+[m[31m-[m
+ services/cart_service.go        | 68 [32m+++++++++++++++++[m[31m-----------[m
+ services/user_service.go        |  2 [32m+[m[31m-[m
+ 19 files changed, 437 insertions(+), 135 deletions(-)
+
+[33mcommit 9e78c8d87976a54026669ff1761915f658e36be8[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Fri Jul 19 01:58:19 2024 +0800
+
+    first_commnit
+
+ .ENV                            |   5 [32m++[m
+ config/db.go                    |  29 [32m+++++++++[m
+ config/loadENV.go               |  26 [32m++++++++[m
+ dto/auth_dto.go                 |  21 [32m+++++++[m
+ dto/cart_dto.go                 |  22 [32m+++++++[m
+ dto/params.go                   |   7 [32m+++[m
+ go.mod                          |  56 [32m++++++++++++++++++[m
+ go.sum                          | 127 [32m++++++++++++++++++++++++++++++++++++++++[m
+ handleError/handle_error.go     |  30 [32m++++++++++[m
+ handleError/types.go            |  29 [32m+++++++++[m
+ handler/cart_handler.go         |  86 [32m+++++++++++++++++++++++++++[m
+ handler/user_handler.go         | 107 [32m+++++++++++++++++++++++++++++++++[m
+ helper/password.go              |  15 [32m+++++[m
+ helper/response.go              |  43 [32m++++++++++++++[m
+ helper/token.go                 |  51 [32m++++++++++++++++[m
+ main.go                         |  21 [32m+++++++[m
+ middleware/authJWTMiddleware.go |  38 [32m++++++++++++[m
+ middleware/corsMiddleware.go    |  18 [32m++++++[m
+ models/products.go              |  17 [32m++++++[m
+ models/purchase.go              |  28 [32m+++++++++[m
+ models/users.go                 |  43 [32m++++++++++++++[m
+ repositories/cart_repository.go |  43 [32m++++++++++++++[m
+ repositories/user_repository.go |  54 [32m+++++++++++++++++[m
+ routes/cart_routers.go          |  22 [32m+++++++[m
+ routes/user_routers.go          |  21 [32m+++++++[m
+ services/cart_service.go        |  71 [32m++++++++++++++++++++++[m
+ services/user_service.go        |  97 [32m++++++++++++++++++++++++++++++[m
+ 27 files changed, 1127 insertions(+)
+[33mcommit 3f654f068c6027587286c1583681c7f849d462fe[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Sun Sep 8 03:33:55 2024 +0800
+
+    Add .gitignore to exclude sensitive files
+
+ .gitignore | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+[33mcommit ea6dbf0beb3c27f32cc9f841e66ef20a8a71baed[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Sun Sep 8 03:29:39 2024 +0800
+
+    Remove sensitive file from repo
+
+ goshop-be94c-firebase-adminsdk-xyt39-4a1194ba92.json | 13 [31m-------------[m
+ 1 file changed, 13 deletions(-)
+
+[33mcommit 311ae84cb1048976455771932068870175ee1b00[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Sun Sep 8 03:26:58 2024 +0800
+
+    add payment gateway service
+
+ .vscode/settings.json                              |  18 [32m++[m
+ config/db.go                                       |   3 [32m+[m[31m-[m
+ config/firebase.go                                 |  23 [32m+++[m
+ dto/payment_dto.go                                 |  34 [32m++++[m
+ dto/products_dto.go                                |  24 [32m++[m[31m-[m
+ dto/user_dto.go                                    |  15 [32m++[m
+ getapi.go                                          |  43 [32m++[m[31m--[m
+ go.mod                                             |  40 [32m+++[m[31m-[m
+ go.sum                                             | 158 [32m+++++++++++++++[m
+ ...p-be94c-firebase-adminsdk-xyt39-4a1194ba92.json |  13 [32m++[m
+ goshop.session.sql                                 |   2 [32m+[m
+ handler/cart_handler.go                            |   4 [32m+[m[31m-[m
+ handler/payment_handler.go                         |  50 [32m+++++[m
+ handler/product_handler.go                         | 222 [32m+++++++++++++++++++++[m
+ main.go                                            |   2 [32m+[m
+ models/payment.go                                  |  21 [32m++[m
+ models/pictures.go                                 |   7 [31m-[m
+ models/products.go                                 |   7 [32m+[m[31m-[m
+ models/purchase.go                                 |   3 [32m+[m[31m-[m
+ models/users.go                                    |   5 [32m+[m[31m-[m
+ repositories/cart_repository.go                    |  27 [32m++[m[31m-[m
+ repositories/payment_repo.go                       |  37 [32m++++[m
+ repositories/product_repo.go                       |  46 [32m+++++[m
+ routes/cart_routers.go                             |   2 [32m+[m[31m-[m
+ routes/payment_router.go                           |  20 [32m++[m
+ routes/product_routers.go                          |  23 [32m+++[m
+ services/cart_service.go                           |  11 [32m+[m[31m-[m
+ services/payment_service.go                        | 104 [32m++++++++++[m
+ services/product_service.go                        | 135 [32m+++++++++++++[m
+ 29 files changed, 1036 insertions(+), 63 deletions(-)
+
+[33mcommit 1d4c683fb603d031c60bd80ee33a220193a88f67[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Tue Aug 27 15:05:19 2024 +0800
+
+    coba
+
+ config/db.go                    |  5 [32m++[m[31m-[m
+ dto/cart_dto.go                 | 39 [32m+++++++++[m[31m-------[m
+ dto/products_dto.go             |  8 [32m++++[m
+ getapi.go                       | 99 [32m+++++++++++++++++++++++++++++++++++++++++[m
+ go.mod                          | 12 [32m++[m[31m---[m
+ go.sum                          | 74 [32m++++++++++++++++++++++++++++++[m
+ handler/cart_handler.go         | 42 [32m+++++++++++++++[m[31m--[m
+ handler/user_handler.go         | 16 [32m++++[m[31m---[m
+ middleware/authJWTMiddleware.go |  2 [32m+[m
+ models/carts.go                 | 31 [32m+++++++++++++[m
+ models/pictures.go              |  7 [32m+++[m
+ models/products.go              | 20 [32m++++[m[31m-----[m
+ models/purchase.go              | 41 [32m++++++++[m[31m---------[m
+ models/users.go                 | 47 [32m+++++[m[31m--------------[m
+ repositories/cart_repository.go | 38 [32m+++++++++++++[m[31m---[m
+ repositories/product_repo.go    | 19 [32m++++++++[m
+ routes/cart_routers.go          |  2 [32m+[m[31m-[m
+ services/cart_service.go        | 68 [32m+++++++++++++++++[m[31m-----------[m
+ services/user_service.go        |  2 [32m+[m[31m-[m
+ 19 files changed, 437 insertions(+), 135 deletions(-)
+
+[33mcommit 9e78c8d87976a54026669ff1761915f658e36be8[m
+Author: AmryLil <ulilamry432@gmail.com>
+Date:   Fri Jul 19 01:58:19 2024 +0800
+
+    first_commnit
+
+ .ENV                            |   5 [32m++[m
+ config/db.go                    |  29 [32m+++++++++[m
+ config/loadENV.go               |  26 [32m++++++++[m
+ dto/auth_dto.go                 |  21 [32m+++++++[m
+ dto/cart_dto.go                 |  22 [32m+++++++[m
+ dto/params.go                   |   7 [32m+++[m
+ go.mod                          |  56 [32m++++++++++++++++++[m
+ go.sum                          | 127 [32m++++++++++++++++++++++++++++++++++++++++[m
+ handleError/handle_error.go     |  30 [32m++++++++++[m
+ handleError/types.go            |  29 [32m+++++++++[m
+ handler/cart_handler.go         |  86 [32m+++++++++++++++++++++++++++[m
+ handler/user_handler.go         | 107 [32m+++++++++++++++++++++++++++++++++[m
+ helper/password.go              |  15 [32m+++++[m
+ helper/response.go              |  43 [32m++++++++++++++[m
+ helper/token.go                 |  51 [32m++++++++++++++++[m
+ main.go                         |  21 [32m+++++++[m
+ middleware/authJWTMiddleware.go |  38 [32m++++++++++++[m
+ middleware/corsMiddleware.go    |  18 [32m++++++[m
+ models/products.go              |  17 [32m++++++[m
+ models/purchase.go              |  28 [32m+++++++++[m
+ models/users.go                 |  43 [32m++++++++++++++[m
+ repositories/cart_repository.go |  43 [32m++++++++++++++[m
+ repositories/user_repository.go |  54 [32m+++++++++++++++++[m
+ routes/cart_routers.go          |  22 [32m+++++++[m
+ routes/user_routers.go          |  21 [32m+++++++[m
+ services/cart_service.go        |  71 [32m++++++++++++++++++++++[m
+ services/user_service.go        |  97 [32m++++++++++++++++++++++++++++++[m
+ 27 files changed, 1127 insertions(+)

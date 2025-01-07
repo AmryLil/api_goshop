@@ -10,10 +10,9 @@ type Payment struct {
 	ItemDetails []ItemDetails `gorm:"foreignKey:PaymentID"`
 	CreatedAt   time.Time     `gorm:"autoCreateTime"`
 }
-
 type ItemDetails struct {
 	ProudctID int       `gorm:"not null"`
-	PaymentID int       `gorm:"primaryKey;autoIncrement"`
+	PaymentID int       `gorm:"not null`
 	Name      string    `gorm:"not null"`
 	QTY       int       `gorm:"not null"`
 	Price     int       `gorm:"not null"`

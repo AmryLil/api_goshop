@@ -7,7 +7,7 @@ import (
 )
 
 type PaymentRepo interface {
-	CreatePayment(models models.Payment) error
+	CreatePayment(models models.Payment) (*models.Payment, error)
 	CreateItemDetailsPayment(models []models.ItemDetails) error
 	FindUserByID(id *int) (models.UserAccounts, error)
 }
@@ -20,9 +20,9 @@ func NewPaymentRepo(db *gorm.DB) *payment_repo {
 	return &payment_repo{db}
 }
 
-func (r payment_repo) CreatePayment(models models.Payment) error {
+func (r payment_repo) CreatePayment(models models.Payment) (*models.Payment, error) {
 	err := r.db.Create(&models).Error
-	return err
+	return &models, err
 }
 
 func (r *payment_repo) FindUserByID(id *int) (models.UserAccounts, error) {

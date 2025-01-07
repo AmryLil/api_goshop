@@ -1,2 +1,2 @@
 SELECT *
-FROM carts;
+FROM item_details;
